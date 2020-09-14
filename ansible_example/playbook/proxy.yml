@@ -1,0 +1,15 @@
+- hosts: proxy
+  remote_user: ansibleman
+  become: yes
+  tasks:
+    - name: copy nginx conf
+      template:
+        src: ~/ansible/template/use_ssl_proxy.tmpl
+        dest: /etc/nginx/sites-available/use_ssl_proxy
+        mode: 0644
+        backup: yes
+    - name: reload nginx
+      shell: nginx -s reload
+
+  vars:
+    target_server: "{{ lookup('env', 'TARGET') }}"

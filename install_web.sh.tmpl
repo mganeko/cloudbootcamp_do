@@ -1,0 +1,52 @@
+#!/bin/sh
+# nginxをインストール、ファイルも追加
+
+SSHKEY_FILE=~/.ssh/your_private_key
+
+# -- default target --
+HOST=$TARGET
+SERVERNAME="WebServer by script"
+
+# --- check arg  ---
+if [ $# -eq 0 ]; then
+  echo "Please specify WebServer Name (1 arg)." 1>&2
+  exit 1
+fi
+
+# --- 1st arg is SERVERNAME ---
+if [ $# -ge 1 ]; then
+  SERVERNAME=$1
+fi
+
+# --- 2nd arg is HOST ---
+if [ $# -ge 2 ]; then
+  HOST=$2
+fi
+
+echo "Install WebServer, Name=$SERVERNAME ,  IP=$HOST"
+
+# --- install nginx  ---
+ssh -i $SSHKEY_FILE -o "StrictHostKeyChecking=no" root@$HOST <<EOC
+
+apt update
+apt -y install nginx
+
+EOC
+
+
+# --- copy html template ---
+scp -i $SSHKEY_FILE /var/www/html/hello.html root@$HOST:/var/www/html
+
+# --- modify html template ---
+# htmlの「BOOTCAMP」の文字を、引数で指定された「Webサーバー名」で置換
+ssh -i $SSHKEY_FILE root@$HOST <<EOC
+sed -i.bak "s/BOOTCAMP/$SERVERNAME/" /var/www/html/hello.html
+
+# --- check by human ---
+echo $SERVERNAME
+echo "================================="
+cat  /var/www/html/hello.html
+echo "================================="
+echo "Please open http://$HOST/hello.html"
+
+EOC

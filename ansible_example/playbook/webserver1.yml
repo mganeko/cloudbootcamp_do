@@ -1,0 +1,11 @@
+- hosts: web
+  remote_user: ansibleman
+  become: yes
+  tasks:
+    - name: apt update
+      shell: apt update -y
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes

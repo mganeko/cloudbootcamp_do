@@ -1,0 +1,20 @@
+- hosts: web
+  remote_user: ansibleman
+  become: yes
+  tasks:
+    - name: apt update
+      shell: apt update -y
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+    - name: copy html
+      template:
+        src: ~/ansible/template/hello.html.tmpl
+        dest: /var/www/html/hello.html
+        mode: 0644
+        backup: yes
+
+  vars:
+     server_name: "{{ lookup('env', 'TARGET_SERVERNAME') }}"

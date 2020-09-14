@@ -1,0 +1,9 @@
+node_modules/
+
+# shell script from template
+connect.sh
+create_droplet.sh
+install_web.sh
+setup_token.sh
+update_droplet.sh
+

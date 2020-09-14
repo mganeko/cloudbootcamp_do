@@ -1,0 +1,4 @@
+#!/bin/sh
+SSHKEY_FILE=~/.ssh/your_private_key
+SSH_USER=root
+ssh -i $SSHKEY_FILE -o "StrictHostKeyChecking=no" $SSH_USER@$TARGET

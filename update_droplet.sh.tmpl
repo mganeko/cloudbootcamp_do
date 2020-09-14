@@ -1,0 +1,23 @@
+#!/bin/sh
+# sshを使って作ったDropletをコントロールし、OSをアップデートするスクリプト
+
+SSHKEY_FILE=~/.ssh/your_private_key
+
+# -- default target --
+HOST=$TARGET
+
+# --- use arg, if specified ---
+if [ $# -eq 1 ]; then
+  HOST=$1
+fi
+
+echo "Update Droplet IP=$HOST"
+
+# --- update os  ---
+ssh -i $SSHKEY_FILE -o "StrictHostKeyChecking=no" root@$HOST <<EOC
+# 途中で上書きを聞かれる場合は、次の行のコメントアウトを外す
+#apt-mark hold openssh-server
+apt update
+apt -y upgrade
+
+EOC
