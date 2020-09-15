@@ -7,8 +7,8 @@ server {
     listen 443 ssl default_server;
     listen [::]:443 ssl default_server;
 
-    ssl_certificate /etc/letsencrypt/live/your_domain/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/your_domain/privkey.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/YOUR_DOMAIN/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/YOUR_DOMAIN/privkey.pem; # managed by Certbot
 
     root /var/www/html;
 
