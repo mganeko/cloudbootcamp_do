@@ -17,6 +17,13 @@ echo "Please wait a minute" >&2
 # -- create droplet and wait initialize --
 doctl compute droplet create --region sgp1 --image ubuntu-20-04-x64 --size s-1vcpu-1gb --wait --output json --ssh-keys $SSH_KEY $NAME > /tmp/droplet.json
 
-export TARGET=`cat /tmp/droplet.json | jq -r '.[].networks.v4[].ip_address'`
-echo "Created. IP Address="$TARGET >&2
+# -- private IP
+export VPC_TARGET=`cat /tmp/droplet.json | jq -r '.[].networks.v4[] | select(.type == "private") | .ip_address'`
+echo "Created. Private IP Address="$VPC_TARGET >&2
+
+# -- public IP
+#export TARGET=`cat /tmp/droplet.json | jq -r '.[].networks.v4[].ip_address'`
+export TARGET=`cat /tmp/droplet.json | jq -r '.[].networks.v4[] | select(.type == "public") | .ip_address'`
+echo "Created. Public IP Address="$TARGET >&2
 echo $TARGET
+
