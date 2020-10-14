@@ -1,0 +1,5 @@
+#!/bin/sh
+export FIREWALL_ID=xxxxxxxxxxxxxxxxxxxx
+
+doctl compute firewall add-droplets $FIREWALL_ID --droplet-ids $1
+
