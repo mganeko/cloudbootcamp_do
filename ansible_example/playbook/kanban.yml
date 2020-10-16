@@ -1,0 +1,73 @@
+- hosts: kanban
+  remote_user: ansibleman
+  become: yes
+  environment:
+    DB_USER: "your_user"
+    DB_PASSWORD: "your_password"
+    DB_NAME: "defaultdb"
+    DB_HOST: "db_host_name"
+    DB_PORT: 25060
+    GRAHPQL_HOST: "{{ lookup('env', 'TARGET') }}"
+    GRAPHQL_PORT: 8080
+    GRAPHQL_BROWSER_URL: "https://YOUR_SERVER/graphql"
+
+    FRONT_HOST: "{{ lookup('env', 'TARGET') }}"
+    FRONT_PORT: 3000
+    FRONT_BASE: "/kanban/"
+
+  tasks:
+    - name: apt update
+      shell: apt update -y
+    - name: Install node
+      apt:
+        name:
+          - mysql-client
+          - nodejs
+          - npm
+        state: latest
+        update_cache: yes
+    - name: Install go
+      snap:
+        name: go
+        classic: yes
+    - name: git clone
+      git:
+        repo: https://github.com/mganeko/kanban-go-nuxt-graphql.git
+        dest: /root/kanban
+        update: no
+    - name: install npm modules
+      npm:
+        path: /root/kanban/front/
+        state: latest
+
+    - name: copy setup_env.sh
+      template:
+        src: ~/ansible/template/kanban_setup_env.sh.tmpl
+        dest: /root/kanban/setup_env.sh
+        mode: 0644
+        backup: yes
+    - name: copy Header.vue
+      template:
+        src: ~/ansible/template/Header.vue.tmpl
+        dest: /root/kanban/front/components/Header.vue
+        mode: 0644
+        backup: yes
+
+    - name: build server
+      command:
+        cmd: /snap/bin/go build -o kanbanserver server.go
+        chdir: /root/kanban/server/
+    - name: build front
+      command:
+        cmd: npm run build
+        chdir: /root/kanban/front/
+
+  vars:
+    graphql_host: "{{ lookup('env', 'TARGET') }}"
+    graphql_port: 8080
+    graphql_browser_url: "https://YOUR_SERVER/graphql"
+    front_host: "{{ lookup('env', 'TARGET') }}"
+    front_port: 3000
+    front_base: "/kanban/"
+    front_bar_color: "{{ lookup('env', 'FRONT_BAR_COLOR') }}"
+

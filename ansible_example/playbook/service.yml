@@ -1,0 +1,33 @@
+- hosts: kanban
+  remote_user: ansibleman
+  become: yes
+
+  tasks:
+    - name: copy kanban-env
+      template:
+        src: ~/ansible/template/kanban-env.tmpl
+        dest: /etc/default/kanban-env
+        mode: 0644
+        backup: yes
+    - name: copy service files
+      shell: cp /root/kanban/service/*.service /etc/systemd/system/
+    - name: setup service server
+      systemd:
+        name: kanban-server.service
+        enabled: true
+        state: started
+    - name: setup service front
+      systemd:
+        name: kanban-front.service
+        enabled: true
+        state: started
+        daemon_reload: yes
+
+  vars:
+    graphql_host: "{{ lookup('env', 'TARGET') }}"
+    graphql_port: 8080
+    graphql_browser_url: "https://YOUR_SERVER/graphql"
+    front_host: "{{ lookup('env', 'TARGET') }}"
+    front_port: 3000
+    front_base: "/kanban/"
+
