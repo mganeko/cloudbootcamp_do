@@ -1,0 +1,3 @@
+    location /sub/ {
+        proxy_pass    http://xxx.xxx.xxx.xxx/;
+    }

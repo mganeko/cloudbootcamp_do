@@ -4,8 +4,8 @@
   tasks:
     - name: copy nginx conf
       template:
-        src: ~/ansible/template/use_ssl_proxy.tmpl
-        dest: /etc/nginx/sites-available/use_ssl_proxy
+        src: ~/ansible/template/location_sub.tmpl
+        dest: /etc/nginx/sites-available/location_sub
         mode: 0644
         backup: yes
     - name: reload nginx

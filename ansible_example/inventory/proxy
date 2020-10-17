@@ -5,4 +5,4 @@ ansible_ssh_private_key_file=~/.ssh/YOUR_PRIVATE_KEY
 ansible_python_interpreter=/usr/bin/python3
 
 [proxy]
-yyy.yyy.yyy.yyy
+localhost
