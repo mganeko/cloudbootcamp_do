@@ -30,13 +30,10 @@ server {
     proxy_set_header    X-Forwarded-Server    $host;
     proxy_set_header    X-Forwarded-For    $proxy_add_x_forwarded_for;
 
-    #--- proxy for kanban ---
-    location /kanban/ {
-        proxy_pass    http://{{ kanban_server }}:3000/kanban/;
-    }
-    location /graphql/ {
-        proxy_pass    http://{{ kanban_server }}:8080/;
-    }
+    # ---- include location for sub WebServer ----
+    include /etc/nginx/sites-available/location_sub;
 
+    # ---- include location for Kanban App ----
+    include /etc/nginx/sites-available/location_kanban;
 }
 

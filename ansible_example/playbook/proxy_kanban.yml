@@ -4,8 +4,8 @@
   tasks:
     - name: copy nginx conf
       template:
-        src: ~/ansible/template/use_ssl_kanban.tmpl
-        dest: /etc/nginx/sites-available/use_ssl_kanban
+        src: ~/ansible/template/location_kanban.tmpl
+        dest: /etc/nginx/sites-available/location_kanban
         mode: 0644
         backup: yes
     - name: reload nginx

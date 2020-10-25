@@ -1,0 +1,7 @@
+    #--- proxy for kanban ---
+    location /kanban/ {
+        proxy_pass    http://{{ kanban_server }}:3000/kanban/;
+    }
+    location /graphql/ {
+        proxy_pass    http://{{ kanban_server }}:8080/;
+    }
