@@ -32,9 +32,9 @@ else
   echo $TARGET >> ~/ansible/inventory/new_kanban
 fi
 
-# --- add firewall ---
-export DROPLET_ID=`sh get_droplet_id.sh`
-sh add_firewall_private.sh $DROPLET_ID
+# --- (add firewall) ---
+#export DROPLET_ID=`sh get_droplet_id.sh`
+#sh add_firewall_private.sh $DROPLET_ID
 
 # --- setup with Ansible ---
 echo "-- sleep until ssh ready --"
