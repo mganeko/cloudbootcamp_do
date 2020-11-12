@@ -1,0 +1,19 @@
+#!/bin/sh
+# リモートのDropletをコントロールし、kanbanを起動する
+
+SSHKEY_FILE=~/.ssh/YOUR_PRIVATE_KEY
+
+# -- default target --
+HOST=$TARGET
+
+# --- use arg, if specified ---
+if [ $# -eq 1 ]; then
+  HOST=$1
+fi
+
+echo "stop Kanban IP=$HOST"
+
+ssh -i $SSHKEY_FILE -o "StrictHostKeyChecking=no" root@$HOST <<EOC
+cd kanban
+sh stop.sh 
+EOC
